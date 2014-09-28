@@ -52,6 +52,15 @@ class db():
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
+    def executeQuery(self, sql):
+        '''
+        Execute a query with no result
+        :param sql: query
+        :return:None
+        '''
+        self.cursor.execute(sql)
+        self.con.commit()
+
     def getKeywords(self):
         '''
         Get the list of keywords
@@ -60,3 +69,48 @@ class db():
         keywords = self.select("select * from keywords")
         return  keywords
 
+    def getFileByURL(self, url):
+        '''
+        Select file by url
+        :param url: file download page
+        :return: file row
+        '''
+        file = self.select("select * from files where fil_url='" + url + "'")
+        return file
+
+    def addFile(self, url, keyword):
+        '''
+        Add a file to files table
+        :param url: file url
+        :param keyword: search keyword
+        :return:None
+        '''
+        sql = "insert into files(fil_key_id, fil_name, fil_url) values (%d, '%s', '%s')"
+        file_name = url.split('/')[-1]
+        self.executeQuery(sql %(keyword[0], file_name, url))
+
+    def getFiles(self):
+        '''
+        Get a list of all files registered and not downloaded
+        :return: List of file rows
+        '''
+        sql = 'select * from files where fil_downloaded = 0'
+        return self.select(sql)
+
+    def getKeywordByID(self, id):
+        '''
+        Get the keyword row by ID
+        :param id: key_id
+        :return: Keyword row
+        '''
+        sql = 'select * from keywords where key_id = ' + str(id)
+        return self.select(sql)
+
+    def fileDownloaded(self, fil_id):
+        '''
+        Set a file as downloaded
+        :param fil_id: file id
+        :return:None
+        '''
+        sql = 'update files set fil_downloaded = 1 where fil_id = ' + str(fil_id)
+        self.executeQuery(sql)
