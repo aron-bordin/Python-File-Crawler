@@ -51,3 +51,12 @@ class db():
         '''
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+
+    def getKeywords(self):
+        '''
+        Get the list of keywords
+        :return: keywords
+        '''
+        keywords = self.select("select * from keywords")
+        return  keywords
+
