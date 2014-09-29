@@ -63,6 +63,8 @@ class Crawler():
         :param file_url: URL to download this file
         :return: boolean
         '''
+        file_url = file_url.replace("'", "")
+        file_url = file_url.replace('"', "")
         file = self.d.getFileByURL(file_url)
         if(len(file) == 0):
             self.d.addFile(file_url, keyword)
@@ -74,8 +76,12 @@ class Crawler():
         :return: True if download was successful, False if had some problem
         '''
         self.getFolder(keyword[2])
-        urlretrieve(file[3], 'Downloads/%s/%s' %(keyword[2], file[2]))
-        self.d.fileDownloaded(file[0])
+        try:
+        	urlretrieve(file[3], 'Downloads/%s/%s' %(keyword[2], file[2]))
+        	self.d.fileDownloaded(file[0])
+        except Exception as e:
+        	print("Failed to download")        	
+        
 
 
     def getFolder(self, folder):
