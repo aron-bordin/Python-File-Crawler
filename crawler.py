@@ -10,16 +10,14 @@ class Crawler():
         Check proxies, keywords, search and download the files.
     '''
 
-    def __init__(self, extension = "pdf", limit = 100, download = True):
+    def __init__(self, extension = "pdf", download = True):
         '''
         Initialize the Crawler with some settings.
         :param extension: extension used by google to filter files
-        :param limit: the max of files to be found
         :param download:  If True, search and download files. Otherwise, just save the file url at files table
         :return: None
         '''
         self.extension = extension
-        self.limit = limit
         self.download = download
         self.d = db(s.host, s.username, s.password, s.database)
         self.d.connect()
@@ -80,7 +78,7 @@ class Crawler():
         	urlretrieve(file[3], 'Downloads/%s/%s' %(keyword[2], file[2]))
         	self.d.fileDownloaded(file[0])
         except Exception as e:
-        	print("Failed to download")        	
+        	print("Failed to download" + str(e))        	
         
 
 

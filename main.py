@@ -13,5 +13,5 @@ def run_tests():
 
 if __name__ == "__main__":
     run_tests()
-    c = Crawler()
+    c = Crawler("pdf")
     c.run()
